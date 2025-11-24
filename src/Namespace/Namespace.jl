@@ -3,6 +3,9 @@ module Namespace
 using PkgUtility.UniversalConstants: T₀, T₂₅
 
 
+include("config/constants/photosynthesis-rate-constant.jl");
+include("config/constants.jl");
+
 include("config/methods/colimitation-method.jl");
 include("config/methods/colimitation-method-settings.jl");
 include("config/methods/fluorescence-model.jl");
@@ -13,7 +16,6 @@ include("config/methods/stomatal-model-beta.jl");
 include("config/methods/stomatal-model.jl");
 include("config/methods/temperature-dependency.jl");
 include("config/methods/temperature-dependency-settings.jl");
-
 include("config/methods.jl");
 
 include("config.jl");
