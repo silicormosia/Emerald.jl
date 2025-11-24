@@ -18,5 +18,6 @@ include("config/methods.jl");
 
 include("config.jl");
 
+include(("../old/EmeraldLand/Namespace/Namespace.jl"));
 
 end # module Namespace

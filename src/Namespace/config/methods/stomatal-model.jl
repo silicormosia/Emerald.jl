@@ -1,5 +1,5 @@
 """
-Hierarchy of AbstractStomataModel:
+Hierarchy of AbstractStomatalConductanceModel:
 - AndereggSM
 - BallBerrySM
 - EllerSM
