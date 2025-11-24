@@ -10,6 +10,7 @@ include("config/methods/colimitation-method.jl");
 include("config/methods/colimitation-method-settings.jl");
 include("config/methods/fluorescence-model.jl");
 include("config/methods/fluorescence-model-settings.jl");
+include("config/methods/fluorescence-spectra.jl");
 include("config/methods/photosynthesis-model.jl");
 include("config/methods/soil-albedo.jl");
 include("config/methods/stomatal-model-beta.jl");

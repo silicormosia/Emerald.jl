@@ -5,6 +5,8 @@ Base.@kwdef mutable struct SPACMethods{FT<:AbstractFloat}
     # fluorescence methods
     "Fluorescence method"
     FLUORESCENCE_METHOD::AbstractFluorescenceMethod{FT} = KNFluorescenceModel{FT}()
+    "Fluorescence spectra method"
+    FLUORESCENCE_SPECTRA_METHOD::AbstractFluorescenceSpectraMethod = PlatespectFluorescenceSpectra()
 
     # photosynthesis models - Ac, Aj, Ap methods
     "C3 Ac method"
