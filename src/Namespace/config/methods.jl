@@ -2,6 +2,20 @@
 Method configuration for the SPAC model
 """
 Base.@kwdef mutable struct SPACMethods{FT<:AbstractFloat}
+    # photosynthesis methods
+    "C3 Ac method"
+    C3_AC_METHOD::AbstractAcMethod = AcMethodC3VcmaxPi();
+    "C3 Aj method"
+    C3_AJ_METHOD::AbstractAjMethod = AjMethodC3JmaxPi();
+    "C3 Ap method"
+    C3_AP_METHOD::AbstractApMethod = ApMethodC3Vcmax();
+    "C4 Ac method"
+    C4_AC_METHOD::AbstractAcMethod = AcMethodC4Vcmax();
+    "C4 Aj method"
+    C4_AJ_METHOD::AbstractAjMethod = AjMethodC4JPSII();
+    "C4 Ap method"
+    C4_AP_METHOD::AbstractApMethod = ApMethodC4VcmaxPi();
+
     # soil albedo method
     "Soil albedo method"
     SOIL_ALBEDO::AbstractSoilAlbedo = SoilAlbedoHyperspectralCLIMA()
