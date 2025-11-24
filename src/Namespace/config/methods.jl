@@ -2,6 +2,10 @@
 Method configuration for the SPAC model
 """
 Base.@kwdef mutable struct SPACMethods{FT<:AbstractFloat}
+    # fluorescence methods
+    "Fluorescence method"
+    FLUORESCENCE_METHOD::AbstractFluorescenceMethod{FT} = KNFluorescenceModel{FT}();
+
     # photosynthesis methods
     "C3 Ac method"
     C3_AC_METHOD::AbstractAcMethod = AcMethodC3VcmaxPi();
