@@ -1,10 +1,13 @@
 module Namespace
 
 using PkgUtility.UniversalConstants: T₀, T₂₅
+using PkgUtility.UniversalConstants: TraceGasAir, TraceGasCH₄, TraceGasCO₂, TraceGasH₂O, TraceGasN₂, TraceGasO₂, TraceLiquidH₂O
 
 
 include("config/constants/photosynthesis-rate-constant.jl");
 include("config/constants.jl");
+
+include("config/dimensions.jl");
 
 include("config/methods/colimitation-method.jl");
 include("config/methods/colimitation-method-settings.jl");
