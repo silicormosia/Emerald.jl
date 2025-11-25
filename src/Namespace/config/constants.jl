@@ -10,6 +10,10 @@ Base.@kwdef mutable struct SPACConstants{FT<:AbstractFloat}
     "Rate constants for PSII"
     PSII_RATE_CONSTANTS::PhotosystemIIRateConstants{FT} = PhotosystemIIRateConstants{FT}()
 
+    # spectra
+    "Reference Spetra"
+    SPECTRA::ReferenceSpectra{FT} = ReferenceSpectra{FT}(LAND_ARTIFACT, OLD_PHI_2021)
+
     # trace gas
     "Trace gas air"
     TRACE_AIR::TraceGasAir{FT} = TraceGasAir{FT}()
