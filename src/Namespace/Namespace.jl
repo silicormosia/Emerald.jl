@@ -19,7 +19,7 @@ const OLD_PHI_2017_1NM = "oldphi_2017_1nm";
 const OLD_PHI_2021_1NM = "oldphi_2021_1nm";
 const NEW_PHI_2017_1NM = "newphi_2017_1nm";
 const NEW_PHI_2021_1NM = "newphi_2021_1nm";
-const SOIL_TEXT        = read_csv("../../data/SOIL-TEXTURE.csv");
+const SOIL_TEXTURE     = read_csv("$(@__DIR__)/../../data/SOIL-TEXTURE.csv");
 
 
 include("config/config-info.jl");
