@@ -1,12 +1,10 @@
 module Namespace
 
 using LazyArtifacts
+using PkgUtility.DataIO: read_csv, read_jld2, save_jld2!
+using PkgUtility.MathTools: interpolate_data
 using PkgUtility.UniversalConstants: T₀, T₂₅
 using PkgUtility.UniversalConstants: TraceGasAir, TraceGasCH₄, TraceGasCO₂, TraceGasH₂O, TraceGasN₂, TraceGasO₂, TraceLiquidH₂O
-using PkgUtility.MathTools: interpolate_data
-
-using ..EmeraldIO.Text: read_csv
-using ..EmeraldIO.Jld2: read_jld2, save_jld2!
 
 
 # Please do not use V1/V2/V3 files here as they do not contain the Phi_PSI and Phi_PSII variables
