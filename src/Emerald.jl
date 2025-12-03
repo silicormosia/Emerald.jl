@@ -28,8 +28,4 @@ include("SPAC/SPAC.jl");
 include("Land/Land.jl");
 
 
-include("old/EmeraldData/EmeraldData.jl");
-
-
-
 end # module Emerald

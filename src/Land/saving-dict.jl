@@ -1,6 +1,5 @@
-# Netcdf configuration for output
 # All keys start with "MOD_" results in multiple outputs, deal with them carefully in the prepare_df.jl file
-SAVING_DICT = Dict{String, Any}(
+const DEFAULT_SAVING_DICT = Dict{String,Bool}(
     # Modeled soil water content and temperature
             "MOD_SWC"     => true,
             "MOD_P_SOIL"  => true,
@@ -47,25 +46,23 @@ SAVING_DICT = Dict{String, Any}(
 );
 
 
-#######################################################################################################################################################################################################
-#
-# Changes to this function
-# General
-#     2023-Apr-13: add function to create spac configuration
-#     2025-Sep-15: do not set default BIN
-#
-#######################################################################################################################################################################################################
 """
 
-    spac_config(gm_dict::Dict)
+    parameters_to_save(; save_all::Bool = false)
 
-Create a SPAC configuration struct, given
-- `gm_dict` Dictionary of GriddingMachine data in a grid
+Create a saving dict for simulation, given
+- `save_all` If true, set all parameters to be saved
 
 """
-function spac_config(gm_dict::Dict)
-    config = SPACConfig(gm_dict["FT"]);
-    config.CONFIG_INFO.MESSAGE_LEVEL = gm_dict["MESSAGE_LEVEL"];
+function parameters_to_save(; save_all::Bool = false)
+    new_dict = deepcopy(DEFAULT_SAVING_DICT);
 
-    return config
+    # If save_all is true, set all values to true
+    if save_all
+        for (k, _) in new_dict
+            new_dict[k] = true;
+        end;
+    end;
+
+    return new_dict
 end;

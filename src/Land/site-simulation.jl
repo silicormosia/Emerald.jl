@@ -29,13 +29,13 @@
                 gm_dict::Dict{String,Any};
                 appending::Bool = false,
                 saving::Union{Nothing,String} = nothing,
-                saving_dict::Dict{String,Any} = SAVING_DICT,
+                saving_dict::Dict{String,Bool} = SAVING_DICT,
                 selection = :)
     simulation!(config::SPACConfig{FT},
                 spac::BulkSPAC{FT},
                 df::DataFrame;
                 saving::Union{Nothing,String} = nothing,
-                saving_dict::Dict{String,Any} = SAVING_DICT,
+                saving_dict::Dict{String,Bool} = SAVING_DICT,
                 selection = :) where {FT}
 
 Run simulation on site level, given
@@ -53,57 +53,57 @@ The second method can be used to run externally prepared config, spac, and weath
 """
 function simulation! end;
 
-simulation!(wd_tag::String,
-            gm_dict::Dict{String,Any};
-            appending::Bool = false,
+simulation!(gm_tag::String,
+            wd_tag::String,
+            lat::Number,
+            lon::Number,
+            year::Int;
             saving::Union{Nothing,String} = nothing,
-            saving_dict::Dict{String,Any} = SAVING_DICT,
+            saving_dict::Dict{String,Bool} = DEFAULT_SAVING_DICT,
+            selection = :) = simulation!(grid_dict(LandDatasetLabels(gm_tag, year), lat, lon), wd_tag, lat, lon, year; saving = saving, saving_dict = saving_dict, selection = selection);
+
+simulation!(gmd::Dict{String,Any},
+            wd_tag::String,
+            lat::Number,
+            lon::Number,
+            year::Int;
+            saving::Union{Nothing,String} = nothing,
+            saving_dict::Dict{String,Bool} = DEFAULT_SAVING_DICT,
             selection = :) = (
-    config = spac_config(gm_dict);
-    spac = grid_spac(config, gm_dict);
-    df = grid_weather_driver(wd_tag, gm_dict; appending = appending);
+    wd = grid_weather(WeatherDriverLabels(wd_tag, year), lat, lon);
+    config = site_config(gmd);
+    spac = site_spac(config, gmd);
+    driver = site_driver_tuple(gmd, wd);
+    results = site_result_tuple(spac, wd, parameters_to_save());
 
-    return simulation!(config, spac, df; saving = saving, saving_dict = saving_dict, selection = selection);
+    return simulation!(config, spac, driver, results; saving = saving, saving_dict = saving_dict, selection = selection);
 );
 
 simulation!(config::SPACConfig{FT},
             spac::BulkSPAC{FT},
-            df::DataFrame;
+            driver::NamedTuple,
+            results::NamedTuple;
             saving::Union{Nothing,String} = nothing,
-            saving_dict::Dict{String,Any} = SAVING_DICT,
-            selection = :) where {FT} = (
-    # convert the DataFrame to NamedTuple with new fields
-    wdf = prepare_wdf(spac, df; saving_dict = saving_dict);
-
-    simulation!(config, spac, wdf; saving = saving, saving_dict = saving_dict, selection = selection);
-
-    return isnothing(saving) ? DataFrame(wdf) : nothing
-);
-
-simulation!(config::SPACConfig{FT},
-            spac::BulkSPAC{FT},
-            wdf::NamedTuple;
-            saving::Union{Nothing,String} = nothing,
-            saving_dict::Dict{String,Any} = SAVING_DICT,
+            saving_dict::Dict{String,Bool} = DEFAULT_SAVING_DICT,
             selection = :) where {FT} = (
     (; MESSAGE_LEVEL) = config.CONFIG_INFO;
 
     # initialize spac based on initialize_state for the first time step
-    prescribe!(config, spac, wdf, 1; initialize_state = true);
+    prescribe!(config, spac, driver, 1; initialize_state = true);
 
     # iterate through the time steps
     if MESSAGE_LEVEL == 0
-        for idx in eachindex(wdf.FDOY)[selection]
-            simulation!(config, spac, wdf, idx; saving_dict = saving_dict);
+        for idx in eachindex(driver.FDOY)[selection]
+            simulation!(config, spac, driver, results, idx; saving_dict = saving_dict);
         end;
     elseif MESSAGE_LEVEL == 1
-        @showprogress for idx in eachindex(wdf.FDOY)[selection]
-            simulation!(config, spac, wdf, idx; saving_dict = saving_dict);
+        @showprogress for idx in eachindex(driver.FDOY)[selection]
+            simulation!(config, spac, driver, results, idx; saving_dict = saving_dict);
         end;
     elseif MESSAGE_LEVEL == 2
-        for idx in eachindex(wdf.FDOY)[selection]
-            @show wdf.ind[idx];
-            simulation!(config, spac, wdf, idx; saving_dict = saving_dict);
+        for idx in eachindex(driver.FDOY)[selection]
+            @show driver.ind[idx];
+            simulation!(config, spac, driver, results, idx; saving_dict = saving_dict);
         end;
     else
         error("MESSAGE_LEVEL should be 0, 1, or 2");
@@ -111,8 +111,8 @@ simulation!(config::SPACConfig{FT},
 
     # save simulation results to hard drive
     if !isnothing(saving)
-        df = DataFrame(wdf);
-        save_nc!(saving, df[selection, [n != "ind" for n in names(df)]]);
+        df = DataFrame(results);
+        save_nc!(saving, df[selection, names(df)]);
     end;
 
     return nothing
@@ -120,19 +120,20 @@ simulation!(config::SPACConfig{FT},
 
 simulation!(config::SPACConfig{FT},
             spac::BulkSPAC{FT},
-            wdf::NamedTuple,
+            driver::NamedTuple,
+            results::NamedTuple,
             ind::Int;
-            saving_dict::Dict{String,Any} = SAVING_DICT,
+            saving_dict::Dict{String,Bool} = DEFAULT_SAVING_DICT,
             δt::Number = 3600) where {FT} = (
     # prescribe parameters
-    prescribe!(config, spac, wdf, ind);
+    prescribe!(config, spac, driver, ind);
 
     # run the model
     soil_plant_air_continuum!(config, spac, δt);
     push_t_history!(config, spac);
 
     # save the results
-    save_fields!(config, spac, wdf, ind; saving_dict = saving_dict);
+    save_fields!(config, spac, results, ind; saving_dict = saving_dict);
 
     return nothing
 );

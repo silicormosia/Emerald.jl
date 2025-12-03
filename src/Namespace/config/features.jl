@@ -32,4 +32,6 @@ Base.@kwdef mutable struct SPACFeatures{FT<:AbstractFloat}
     KR_THRESHOLD::FT = 0.001
     "Prescribe air layer information such as partial pressures"
     PRESCRIBE_AIR::Bool = true
+    "Unlimited NSC pool in the plant"
+    UNLIMITED_NSC_POOL::Bool = true
 end;
