@@ -102,7 +102,7 @@ simulation!(config::SPACConfig{FT},
         end;
     elseif MESSAGE_LEVEL == 2
         for idx in eachindex(driver.FDOY)[selection]
-            @show driver.ind[idx];
+            print("Running simulation for $idx out of $(length(driver.FDOY))...");
             simulation!(config, spac, driver, results, idx; saving_dict = saving_dict);
         end;
     else

@@ -14,5 +14,5 @@ wd = GMI.grid_weather(GMI.WeatherDriverLabels(wd_tag, year), 31.5, 117.2);
 config = LAND.site_config(gmd);
 spac = LAND.site_spac(config, gmd);
 driver = LAND.site_driver_tuple(gmd, wd);
-results = LAND.site_result_tuple(spac, wd, LAND.parameters_to_save());
-LAND.simulation!(config, spac, driver, results; saving = "test.nc", saving_dict = LAND.parameters_to_save(), selection = 4000:4240);
+results = LAND.site_result_tuple(spac, wd, LAND.parameters_to_save(; save_all = true));
+LAND.simulation!(config, spac, driver, results; saving = "test.nc", saving_dict = LAND.parameters_to_save(; save_all = true), selection = 4000:4240);
