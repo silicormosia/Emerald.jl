@@ -1,7 +1,5 @@
 module Emerald
 
-using Revise
-
 
 # requires DataCenter to read the input data
 include("Namespace/Namespace.jl");

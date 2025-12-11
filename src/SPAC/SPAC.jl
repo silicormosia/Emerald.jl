@@ -27,7 +27,7 @@ using ..Photosynthesis: plant_carbon_budget!, plant_photosynthesis!
 using ..PlantHydraulics: capacitance_pressure, capacitance_volume, flow_out, set_flow_profile!, xylem_conductance, xylem_pressure
 using ..PlantHydraulics: clear_legacy!, plant_flow_profile!, plant_growth!, plant_pressure_profile!, plant_water_budget!, xylem_recovery!, update_legacy!
 using ..SoilHydraulics: relative_soil_k, soil_budgets!, soil_profiles!, soil_ψ_25
-using ..StomatalModels: limit_stomatal_conductance!, read_β, stomatal_conductance!, stomatal_conductance_profile!, β_factor!
+using ..StomatalModels: limit_stomatal_conductance!, stomatal_conductance!, stomatal_conductance_profile!, β_factor!
 
 
 # general instructions to run SPAC
@@ -52,26 +52,6 @@ include("instructions/shed_leaves.jl");
 include("timestepper/model.jl");
 include("timestepper/stepper.jl");
 include("timestepper/timer.jl");
-
-
-# quantities of SPAC
-include("quantity/beta.jl");
-include("quantity/biomass.jl");
-include("quantity/broadband.jl");
-include("quantity/co2.jl");
-include("quantity/et.jl");
-include("quantity/gpp.jl");
-include("quantity/goes.jl");
-include("quantity/heat_fluxes.jl");
-include("quantity/hydraulics.jl");
-include("quantity/npp.jl");
-include("quantity/par.jl");
-include("quantity/sif.jl");
-include("quantity/yield.jl");
-
-include("quantity/modis.jl");
-include("quantity/oco.jl");
-include("quantity/tropomi.jl");
 
 
 end; # module
