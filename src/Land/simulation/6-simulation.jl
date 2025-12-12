@@ -1,7 +1,7 @@
 """
 
     simulation!(settings::Union{Dict,OrderedDict}, lat::Number, lon::Number, year::Int; saving::Union{Nothing,String} = nothing)
-    simulation!(settings::Union{Dict,OrderedDict}, gmd::Dict{String,Any}; saving::Union{Nothing,String} = nothing)
+    simulation!(settings::Union{Dict,OrderedDict}, gmd::Union{Dict,OrderedDict}; saving::Union{Nothing,String} = nothing)
 
 Run simulation on site level, given
 - `settings` Dictionary of settings
